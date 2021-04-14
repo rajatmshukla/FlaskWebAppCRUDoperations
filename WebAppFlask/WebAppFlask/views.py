@@ -20,11 +20,7 @@ connection = pypyodbc.connect("Driver= {"+DATABASE_CONFIG["Driver"]+"};Server=" 
 
 
 cursor=connection.cursor()
-query=('SELECT * FROM login')
-cursor.execute(query)
-for row in cursor:
-    uname=row[0]
-    passw=row[1]
+
 
 
 @app.route('/')
@@ -43,11 +39,57 @@ def contact():
     username=request.form['username']
     password=request.form['password']
     data='%s %s' %(username,password)
-    if(username==uname and password==passw):
+    query=('SELECT * FROM login where username=? and pass=?')
+    cursor.execute(query,[username,password])
+    data=cursor.fetchone()
 
-        return render_template('contact.html',message='Congratulations! You Successfully logged in!',value=data)
+    if(data!=None):
+
+        return render_template('contact.html',message='Login Successful'
+            )
     else:
-        return render_template('index.html',message='You have entered wrong set of credentials')
+        return render_template('index.html',
+            message='Login unsuccessful! Incorrect Username or Password')
+
+
+@app.route('/reg')
+def regis():
+    """Renders the home page."""
+    return render_template(
+        'register.html',
+        title='Register Page',
+        year=datetime.now().year,
+    )
+
+
+@app.route('/log')
+def logs():
+    """Renders the home page."""
+    return render_template(
+        'index.html', year=datetime.now().year,
+    )
+
+
+@app.route('/register',methods=['POST'])
+def register():
+    username=request.form['username']
+    password=request.form['password']
+
+    cursor.execute("Insert Into login(username, pass) Values(?,?)" ,[username,password])
+    cursor.commit() 
+    
+    msg = 'You have successfully registered !'
+    return render_template('contact.html',message='Congratulations! You have Successfully Created A New Account!')
+
+@app.route('/delete',methods=['POST'])
+def delete():
+    username=request.form['username']
+
+    cursor.execute("Delete from login where username=?" ,[username])
+    cursor.commit() 
+    
+    msg = 'You have successfully deleted your account!'
+    return render_template('delete.html',message='You have successfully deleted your account!')
 
 
 @app.route('/about')

@@ -5,16 +5,12 @@
 <h2>{{ title }}.</h2>
 <h3>{{ message }}</h3>
 
-<address>
-    One Microsoft Way<br />
-    Redmond, WA 98052-6399<br />
-    <abbr title="Phone">P:</abbr>
-    425.555.0100
-</address>
+<h4>If you wish to delete your account</h4>
+<h5>Re-enter your username</h5>
+<form action="/delete" method="post">
+    Username <input type="text" name="username" /><br /><br />
+    <input type="submit" value="Delete">
+</form>
 
-<address>
-    <strong>Support:</strong>   <a href="mailto:Support@example.com">Support@example.com</a><br />
-    <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
-</address>
-
+<p class="bottom"><a class="bottom" href="/log">Go back to Login Page</a></p>
 {% endblock %}
