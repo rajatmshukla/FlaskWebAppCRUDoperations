@@ -72,10 +72,10 @@
     <Content Include="WebAppFlask\static\scripts\_references.js" />
     <Content Include="WebAppFlask\templates\about.html" />
     <Content Include="WebAppFlask\templates\contact.html" />
-    <Content Include="WebAppFlask\templates\delete.html" />
     <Content Include="WebAppFlask\templates\index.html" />
     <Content Include="WebAppFlask\templates\layout.html" />
     <Content Include="WebAppFlask\templates\register.html" />
+    <Content Include="WebAppFlask\templates\welcome.html" />
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

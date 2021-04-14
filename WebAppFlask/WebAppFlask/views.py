@@ -39,17 +39,20 @@ def contact():
     username=request.form['username']
     password=request.form['password']
     data='%s %s' %(username,password)
+
     query=('SELECT * FROM login where username=? and pass=?')
     cursor.execute(query,[username,password])
     data=cursor.fetchone()
+    
+    selectquery=('SELECT * FROM login')
+    cursor.execute(selectquery)
+    data1=cursor.fetchall()
 
     if(data!=None):
 
-        return render_template('contact.html',message='Login Successful'
-            )
+        return render_template('contact.html',message='Login Successful',value=data1)
     else:
-        return render_template('index.html',
-            message='Login unsuccessful! Incorrect Username or Password')
+        return render_template('index.html',message='Login unsuccessful! Incorrect Username or Password')
 
 
 @app.route('/reg')
@@ -79,7 +82,9 @@ def register():
     cursor.commit() 
     
     msg = 'You have successfully registered !'
-    return render_template('contact.html',message='Congratulations! You have Successfully Created A New Account!')
+    return render_template('Welcome.html',message='Congratulations! You have Successfully Created A New Account!')
+
+
 
 @app.route('/delete',methods=['POST'])
 def delete():
@@ -87,9 +92,31 @@ def delete():
 
     cursor.execute("Delete from login where username=?" ,[username])
     cursor.commit() 
+
+    selectquery=('SELECT * FROM login')
+    cursor.execute(selectquery)
+    data1=cursor.fetchall()
+
+    msg = 'You have successfully deleted the account!'
+    return render_template('contact.html',message='You have successfully deleted your account!',value=data1)
+
+
+
+@app.route('/update',methods=['POST'])
+def update():
+    username=request.form['username']
+    password=request.form['password']
+
+    cursor.execute("Update login set pass=? where username=?" ,[password,username])
+    cursor.commit() 
+
+    selectquery=('SELECT * FROM login')
+    cursor.execute(selectquery)
+    data1=cursor.fetchall()
     
-    msg = 'You have successfully deleted your account!'
-    return render_template('delete.html',message='You have successfully deleted your account!')
+    msg = 'You have successfully updated your record!'
+    return render_template('contact.html',message='You have successfully updated your record!',value=data1)
+
 
 
 @app.route('/about')
