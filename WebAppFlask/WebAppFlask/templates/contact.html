@@ -3,49 +3,45 @@
 {% block content %}
 
 <h2>{{ title }}.</h2>
-<h3>{{ message }}</h3>
+<h4 style="color:dodgerblue">{{message}}</h4>
 
 <p class="bottom"><a class="bottom" href="/log">Go back to Login Page</a></p>
 
-
+<div style="text-align:center">
+    <form action="/search" method="post">
+        Username:<input type="text" name="username" /><br />
+        <input type="submit" style="background-color:dodgerblue; color:white" value="Search" />
+    </form>
+</div>
 
 
 <h4>List Of Employees</h4>
 <table class="table">
     <thead>
         <tr>
-            <th scope="col"><b>username</b></th>
-            <th scope="col"><b>password</b></th>
+            <th scope="col"><b>USERNAME</b></th>
+            <th scope="col"><b>PASSWORD</b></th>
         </tr>
     </thead>
 
-    {% for item in value %}
+    {% for row in value %}
     <tr>
-        <td>{{item[0]}}&nbsp</td>
-        <td>{{item[1]}}</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td><a class="btn" style="background-color:green; color:white" href="/editp/{{row[1]}}">Update Password</a></td>
+        <td><a class="btn" style="background-color:red; color:white" href="/del/{{row[1]}}"> Delete</a></td>
     </tr>
     {% endfor %}
 </table>
 
 
 
-<div style="width: 300px; float:left; height:100px;text-align: left; margin:10px">
-    <h5>If you wish to delete the account</h5>
-    <h5>Enter your username</h5>
-    <form action="/delete" method="post">
-        Username : <input type="text" name="username" /><br /><br />
-        <input type="submit" value="Delete">
-    </form>
-</div>
 
-
-
-<div style="width: 500px; float:right; height:100px; text-align: left; margin:10px">
-    <h5>If you wish to update the account cretentials</h5>
+<div style="width: 500px; float:left; height:100px; text-align: left; margin:10px">
     <form action="/update" method="post">
-        Username : <input type="text" name="username" /><br /><br />
+        Username : <input type="text" name="username" value="{{username}}" /><br /><br />
         Password : <input type="password" name="password" /><br /><br />
-        <input type="submit" value="Update">
+        <input type="submit" style="background-color:dodgerblue; color:white" value="Update">
     </form>
 </div>
-{% endblock %}
+    {% endblock %}

@@ -64,13 +64,54 @@ def regis():
         year=datetime.now().year,
     )
 
+@app.route('/editp/<string:username>')
+def editpass(username):
+    """Renders the home page."""
+    selectquery=('SELECT * FROM login')
+    cursor.execute(selectquery)
+    data1=cursor.fetchall()
+    return render_template(
+        'contact.html',year=datetime.now().year,username=username,value=data1)
+
+
+@app.route('/search',methods=['Post'])
+def search():
+    
+    username=request.form['username']
+    if(username==""):
+        query=('SELECT * FROM login  ')
+        cursor.execute(query)
+        data=cursor.fetchall()
+        return render_template("contact.html",value=data)
+    else:
+        query=('SELECT * FROM login where username=? ')
+        cursor.execute(query,[username])
+        data=cursor.fetchall()
+        if(data is None):
+            return render_template('contact.html',message='Data deleted succesfully')
+        else:
+             return render_template('contact.html',value=data)
+
+
+
+@app.route('/del/<string:username>')
+def delete(username):
+    
+    cursor.execute("Delete from login where username=?" ,[username])
+    cursor.commit() 
+
+    selectquery=('SELECT * FROM login')
+    cursor.execute(selectquery)
+    data1=cursor.fetchall()
+
+    msg = 'You have successfully deleted the account!'
+    return render_template('contact.html',message='You have successfully deleted your account!',value=data1)
+    
 
 @app.route('/log')
 def logs():
     """Renders the home page."""
-    return render_template(
-        'index.html', year=datetime.now().year,
-    )
+    return render_template('index.html', year=datetime.now().year)
 
 
 @app.route('/register',methods=['POST'])
@@ -84,21 +125,6 @@ def register():
     msg = 'You have successfully registered !'
     return render_template('Welcome.html',message='Congratulations! You have Successfully Created A New Account!')
 
-
-
-@app.route('/delete',methods=['POST'])
-def delete():
-    username=request.form['username']
-
-    cursor.execute("Delete from login where username=?" ,[username])
-    cursor.commit() 
-
-    selectquery=('SELECT * FROM login')
-    cursor.execute(selectquery)
-    data1=cursor.fetchall()
-
-    msg = 'You have successfully deleted the account!'
-    return render_template('contact.html',message='You have successfully deleted your account!',value=data1)
 
 
 
