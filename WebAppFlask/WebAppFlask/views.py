@@ -88,8 +88,8 @@ def search():
         query=('SELECT * FROM login where username like ? ')
         cursor.execute(query,[username])
         data=cursor.fetchall()
-        if(data is None):
-            return render_template('contact.html',message='Data deleted succesfully')
+        if(data == []):
+            return render_template('contact.html',message='Entry does not exist!')
         else:
              return render_template('contact.html',value=data)
 
