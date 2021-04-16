@@ -78,13 +78,14 @@ def editpass(username):
 def search():
     
     username=request.form['username']
+    username += '%'
     if(username==""):
         query=('SELECT * FROM login  ')
         cursor.execute(query)
         data=cursor.fetchall()
         return render_template("contact.html",value=data)
     else:
-        query=('SELECT * FROM login where username=? ')
+        query=('SELECT * FROM login where username like ? ')
         cursor.execute(query,[username])
         data=cursor.fetchall()
         if(data is None):
